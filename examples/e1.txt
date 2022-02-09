@@ -1,0 +1,60 @@
+data List[a] {
+  Nil()
+  Cons(a, List[a])
+}
+
+fun length[a](xs: List[a]): Int =
+  match xs {
+    Nil() => 0
+    Cons(_, xs) => 1 + length(xs)
+  }
+
+fun map[a, b](xs: List[a], f: a -> b): List[b] = match xs {
+  Nil() => Nil()
+  Cons(a, xs) => Cons(f(a), map(xs, f))
+}
+
+fun reverse[a](xs: List[a]): List[a] = {
+  fun revAcc(xs: List[a], ys: List[a]): List[a] = match xs {
+    Nil() => ys
+    Cons(a, xs) => revAcc(xs, Cons(a, ys))
+  };
+  revAcc(xs, Nil())
+}
+
+fun not(b: Bool): Bool = if b then false else true
+
+fun isEven(n: Int): Int = if n == 0 then true else isOdd(n - 1)
+
+fun isOdd(n: Int): Int = match n {
+  0 => false
+  1 => true
+  m => not(isEven(m - 2))
+}
+
+fun printList(xs: List[Int]): Unit = match xs {
+  Nil() => printStrLn("")
+  Cons(a, xs) => {
+    printInt(a);
+    printStr(" ");
+    printList(xs)
+  }
+}
+
+fun add2(a: Int): Int = a + 2
+
+fun main(): Unit = {
+  let greeting = "Hello ";
+  printStr(greeting);
+  printStrLn("World!");
+
+  let l1 = Cons(1, Cons(2, Cons(3, Nil())));
+  let l2 = map(reverse(l1), add2);
+  printList(l2);
+
+  printStrLn("Podaj liczbę: ");
+  let i = readInt();
+  printInt(i);
+  printStr(" jest ");
+  printStrLn(if isOdd(i) then "nieparzyste" else "parzyste")
+}

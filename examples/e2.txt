@@ -1,0 +1,31 @@
+
+class Show[a] {
+  fun show(a): String
+}
+
+instance Show[Int] {
+  fun show(x: Int) = intToStr x
+}
+
+# print :: Show a => a -> ()
+print[a]{ Show[a] }(a: a): Unit = printStr(show(a))
+
+
+class Add[a] {
+  fun add(a, a): a
+}
+
+instance Add[Int] {
+  fun add(x: Int, y: Int) = x + y
+}
+
+# sum :: Add a => a -> [a] -> a
+fun sum[a]{ Add[a] }(init: a, xs: List[a]): a = match xs {
+  Nil() => init
+  Cons(x, xs) => sum(add(init, x), xs)
+}
+
+
+fun main() = {
+  print(sum(0, Cons(3, Cons(5, Cons(7, Nil())))));
+}
